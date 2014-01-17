@@ -4,7 +4,7 @@ run {
     ignoreExitValue = true
 }
 
-mainClassName = "com.badlogic.gradletest.DesktopLauncher"
+mainClassName = "utm.csc492.diamondfire.DesktopLauncher"
 
 sourceSets.main.resources.srcDirs = [file("../android/assets").getAbsolutePath()]
 
