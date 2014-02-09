@@ -2,6 +2,7 @@
 package utm.csc492.diamondfire;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 //import com.badlogic.gdx.graphics.GL10;
@@ -29,7 +30,7 @@ public class DiamondFire extends ApplicationAdapter {
 //		}
 //		Bullet.init();
 
-        setScreen(new CityScreen());
+        setScreen(new CityScreen(this));
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class DiamondFire extends ApplicationAdapter {
 		batch.draw(img, 0, 0);
 		batch.end();
 		*/
+
         if (screen != null) screen.render(Gdx.graphics.getDeltaTime());
     }
 
