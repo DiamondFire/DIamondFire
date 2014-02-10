@@ -10,11 +10,13 @@ import com.badlogic.gdx.Screen;
 //import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import utm.csc492.diamondfire.screens.CityScreen;
+import utm.csc492.diamondfire.screens.Test;
 
 
 public class DiamondFire extends ApplicationAdapter {
 
     private Screen screen;
+
 
 	//SpriteBatch batch;
 	//Texture img;
