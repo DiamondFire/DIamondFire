@@ -2,6 +2,7 @@ package utm.csc492.diamondfire.models;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Created by yasith on 2/12/2014.
@@ -34,7 +35,7 @@ public abstract class Unit extends Actor {
     public void draw(SpriteBatch batch, float parentAlpha) {
         // Prepare the sprite before drawing
         sprite.setPosition(x,y);
-        sprite.setScale(scaleX, scaleY);
+        sprite.setScale(this.getScaleX(), this.getScaleY());
 
         sprite.draw(batch, parentAlpha);
     }
@@ -44,8 +45,7 @@ public abstract class Unit extends Actor {
      *
      * Not implemented yet
      */
-    @Override
-    public Actor hit(float x, float y) {}
+    public Actor hit(float x, float y) { return null;}
 
     /**
      * Gets called before draw, should update the states of the Actor here.

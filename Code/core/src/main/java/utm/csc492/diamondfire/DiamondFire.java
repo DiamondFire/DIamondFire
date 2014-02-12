@@ -32,6 +32,7 @@ public class DiamondFire extends ApplicationAdapter {
         }
     }
 
+
     /** return currently active screen **/
     public Screen getScreen () {
         return screen;

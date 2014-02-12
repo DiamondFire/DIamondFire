@@ -1,5 +1,6 @@
 package utm.csc492.diamondfire.models;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import utm.csc492.diamondfire.GameState;
 
 /**
@@ -7,20 +8,25 @@ import utm.csc492.diamondfire.GameState;
  */
 public class Knight extends Unit{
 
-    private int HEALTH = 100;
-    private int RANGE = 1;
-    private int MOVE = 3;
-    private String NAME = "Knight";
+    private static final int HEALTH = 100;
+    private static final int RANGE = 1;
+    private static final int MOVE = 3;
+    private static final String NAME = "Knight";
 
-    private Knight() {
-        Sprite sprite = GameState.getInstance().atlas.createSprite("knight");
-        super(sprite, RANGE, MOVE, HEALTH);
+    private Knight(Sprite sprite, int range, int move, int health) {
+        super(sprite, range, move, health);
     }
 
     public static Knight createKnight(int x, int y) {
-        Knight knight = new Knight();
+        Sprite sprite = GameState.getInstance().atlas.createSprite("knight");
+        Knight knight = new Knight(sprite, RANGE, MOVE, HEALTH);
         knight.setPosition(x, y);
 
         return knight;
+    }
+
+    @Override
+    public void act(float delta) {
+        return;
     }
 }

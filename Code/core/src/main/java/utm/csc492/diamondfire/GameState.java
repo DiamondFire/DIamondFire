@@ -1,5 +1,8 @@
 package utm.csc492.diamondfire;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+
 /**
  * Created by yasith on 2/12/2014.
  */
