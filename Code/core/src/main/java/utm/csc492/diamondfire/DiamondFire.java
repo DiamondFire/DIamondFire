@@ -1,50 +1,24 @@
-
 package utm.csc492.diamondfire;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-//import com.badlogic.gdx.graphics.GL10;
-//import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import utm.csc492.diamondfire.screens.CityScreen;
-import utm.csc492.diamondfire.screens.Test;
 
 
 public class DiamondFire extends ApplicationAdapter {
 
     private Screen screen;
 
-
-	//SpriteBatch batch;
-	//Texture img;
-	
 	@Override
 	public void create () {
-		//batch = new SpriteBatch();
-		//img = new Texture("badlogic.jpg");
-//		try {
-//			new FreeTypeFontGenerator(Gdx.files.internal("test.fnt"));
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		Bullet.init();
-
         setScreen(new CityScreen(this));
 	}
 
 	@Override
 	public void render () {
-		/*
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-		*/
-
         if (screen != null) screen.render(Gdx.graphics.getDeltaTime());
     }
 
