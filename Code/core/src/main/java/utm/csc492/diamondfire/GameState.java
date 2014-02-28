@@ -18,7 +18,7 @@ public class GameState {
 
     // Private constructor prevents initialization from outside
     private GameState() {
-        atlas = new TextureAtlas(Gdx.files.internal("images/pack"));
+        atlas = new TextureAtlas(Gdx.files.internal("sprites/battlesprites.txt"));
     }
 
     public static synchronized GameState getInstance() {

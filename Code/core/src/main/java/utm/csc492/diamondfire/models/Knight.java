@@ -8,18 +8,19 @@ import utm.csc492.diamondfire.GameState;
  */
 public class Knight extends Unit{
 
-    private static final int HEALTH = 100;
-    private static final int RANGE = 1;
-    private static final int MOVE = 3;
-    private static final String NAME = "Knight";
+    private Knight(Sprite sprite) {
+        super(sprite);
 
-    private Knight(Sprite sprite, int range, int move, int health) {
-        super(sprite, range, move, health);
+        this.name = "Knight";
+        this.shortName = 'K';
+        this.health = 100;
+        this.range = 1;
+        this.move = 3;
     }
 
     public static Knight createKnight(int x, int y) {
-        Sprite sprite = GameState.getInstance().atlas.createSprite("knight");
-        Knight knight = new Knight(sprite, RANGE, MOVE, HEALTH);
+        Sprite sprite = GameState.getInstance().atlas.createSprite("Knight");
+        Knight knight = new Knight(sprite);
         knight.setPosition(x, y);
 
         return knight;

@@ -9,22 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public abstract class Unit extends Actor {
 
-    private String name;
-    private int range;
-    private int move;
-    private int health;
+    protected String name;
+    protected char shortName;
+    protected int range;
+    protected int move;
+    protected int health;
 
     private Sprite sprite;
 
     // Positions on the battleground
-    private int x;
-    private int y;
+    private int posX;
+    private int posY;
 
-    public Unit(Sprite sprite, int range, int move, int health) {
+    private float size = 32.0f;
+
+    public Unit(Sprite sprite) {
         this.sprite = sprite;
-        this.range = range;
-        this.move = move;
-        this.health = health;
     }
 
 
@@ -34,9 +34,8 @@ public abstract class Unit extends Actor {
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
         // Prepare the sprite before drawing
-        sprite.setPosition(x,y);
+        sprite.setPosition(posY * size, posX * size);
         sprite.setScale(this.getScaleX(), this.getScaleY());
-
         sprite.draw(batch, parentAlpha);
     }
 
@@ -58,8 +57,8 @@ public abstract class Unit extends Actor {
      * Sets the position on the battleground
      */
     public void setPosition(int x, int y){
-        this.x = x;
-        this.y = y;
+        this.posX = x;
+        this.posY = y;
     }
 
     public int getHealth() {
@@ -80,5 +79,17 @@ public abstract class Unit extends Actor {
 
     public int getMove() {
         return move;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public char getShortName() {
+        return shortName;
     }
 }

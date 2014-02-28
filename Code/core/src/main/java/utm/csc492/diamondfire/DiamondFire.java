@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import utm.csc492.diamondfire.screens.BattleScreen;
 import utm.csc492.diamondfire.screens.CityScreen;
 
 
@@ -14,7 +15,9 @@ public class DiamondFire extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-        setScreen(new CityScreen(this));
+        GameState.getInstance().setGame(this);
+        //setScreen(new CityScreen(this));
+        setScreen(new BattleScreen());
 	}
 
 	@Override
