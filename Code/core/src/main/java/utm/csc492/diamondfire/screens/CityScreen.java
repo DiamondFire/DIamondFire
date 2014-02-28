@@ -5,9 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -15,14 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import utm.csc492.diamondfire.DiamondFire;
+import utm.csc492.diamondfire.RestaurantActor;
+
 
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.LinkedList;
 
 /**
  * Created by rainsharmin on 2014-02-07.
@@ -38,12 +37,17 @@ public class CityScreen implements Screen {
     private Texture texture, settingstexture;
     private Sprite sprite, settingssprite;
     private OrthographicCamera camera;
-    private Array<Restaurant> restaurants;
+    private Array<RestaurantActor> restaurants;
+
+    //public static TextureAtlas atlas;
+    //public static TextureRegion restaurant;
 
     private Stage stage;
     private Skin uiSkin;
     private Table table;
     private TextButton button;
+
+    public RestaurantActor curRestaurant;
 
     // constructor to keep a reference to the main Game class
     public CityScreen(DiamondFire game){
@@ -63,7 +67,7 @@ public class CityScreen implements Screen {
 
         uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        restaurants = new Array<Restaurant>();
+        restaurants = new Array<RestaurantActor>();
         stage = new Stage(0,0,false);
 
         Gdx.input.setInputProcessor(stage);
@@ -108,6 +112,7 @@ public class CityScreen implements Screen {
             }
         }
 
+
     }
 
     @Override
@@ -145,12 +150,18 @@ public class CityScreen implements Screen {
         batch.draw(settingstexture, 750, 430);
         font.draw(batch, "Choose command:", x, y);
         font.draw(batch, year+" "+month, 20, 460);
-
-        for(Restaurant restaurant: restaurants) {
-            batch.draw(texture, restaurant.x, restaurant.y);
-        }
-
         batch.end();
+
+        for(RestaurantActor restaurant: restaurants) {
+            //batch.draw(texture, restaurant.x, restaurant.y);
+            restaurant.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    System.out.println(x);
+                };
+              });
+        stage.addActor(restaurant);
+        }
 
         table = new Table();
         //table.setFillParent(true);
@@ -158,8 +169,7 @@ public class CityScreen implements Screen {
         table.setPosition(20,250);
 
         table.debug();
-        table.add(new Label("RESTAURANT #1: CHEF JIRO", uiSkin));
-        // Jiro Ono = 85 year old sushi master and owner of "Sukiyabashi Jiro"
+        table.add(new Label("RESTAURANT #" +  curRestaurant.number + ": Chef " + curRestaurant.owner, uiSkin));
         table.row();
         table.add(new Label("Gold: 999", uiSkin));
         table.row();
@@ -179,13 +189,15 @@ public class CityScreen implements Screen {
     }
 
     private void createRestaurant(int x, int y, int num) {
-        Restaurant r = new Restaurant();
-        r.x = x;
-        r.y = y;
-        r.width = 64;
-        r.height = 64;
+        Random rand = new Random();
+        String chefNames[] = {"Jiro", "Michelin", "Jin", "Mars", "Night", "Fish"};
+        // Jiro Ono = 85 year old sushi master and owner of "Sukiyabashi Jiro"
+
+        RestaurantActor r = new RestaurantActor(x,y,64,64);
         r.number = num;
+        r.owner = chefNames[rand.nextInt(6)];
         restaurants.add(r);
+        curRestaurant = r;
     }
 
     @Override
@@ -228,18 +240,10 @@ public class CityScreen implements Screen {
         }
     }
 
-    public boolean isAdjacent(Restaurant r1, Restaurant r2) {
+    public boolean isAdjacent(RestaurantActor r1, RestaurantActor r2) {
         return false;
     }
 
-    class Restaurant extends Actor {
-        public int number;
-        public String name;
-
-        public int x, y, width, height;
-        //public Chef owner;
-
-    }
 
     /*class Graph {
         private int V; // # vertices
@@ -265,8 +269,7 @@ public class CityScreen implements Screen {
         } }
 
 
-        Chef names: Jiro, Michelin, Shisu, Bob, Ihsus, Fish
+        Chef names: Jiro, Michelin, Ajin, Mars, Night, Fish
         */
-
-
 }
+
