@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
-import utm.csc492.diamondfire.algorithms.GroundMovement;
 import utm.csc492.diamondfire.algorithms.Point;
 import utm.csc492.diamondfire.models.BattleGround;
 import utm.csc492.diamondfire.models.Knight;
@@ -78,8 +77,8 @@ public class BattleScreen implements Screen {
         // Knight knight = Knight.createKnight(5, 5);
         // drawMoveSquares(shapeRenderer, knight);
 
-        ArrayList<Point> moves = GroundMovement.moveTo(ground, knight1.getPosX(), knight1.getPosY(), knight2.getPosX(), knight2.getPosY());
-        drawMoveSequence(shapeRenderer, moves);
+        //ArrayList<Point> moves = GroundMovement.moveTo(ground, knight1.getPosX(), knight1.getPosY(), knight2.getPosX(), knight2.getPosY());
+        //drawMoveSequence(shapeRenderer, moves);
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -125,7 +124,7 @@ public class BattleScreen implements Screen {
             }
         }
 
-        knight1 = Knight.createKnight(8, 8);
+        knight1 = Knight.createKnight(19, 9);
         knight2 = Knight.createKnight(1, 1);
         addUnit(knight1);
         addUnit(knight2);
