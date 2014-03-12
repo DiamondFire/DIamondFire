@@ -12,8 +12,8 @@ public class BattleGround {
 
     private char map[][];
 
-    private int width;
-    private int height;
+    public int width;
+    public int height;
 
     public BattleGround(int width, int height) {
         this.width = width;
