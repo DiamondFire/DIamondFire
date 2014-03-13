@@ -14,7 +14,6 @@ import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.algorithms.Point;
 import utm.csc492.diamondfire.algorithms.Speech;
 import utm.csc492.diamondfire.models.BattleGround;
-import utm.csc492.diamondfire.models.Knight;
 import utm.csc492.diamondfire.models.Unit;
 
 import java.util.ArrayList;
@@ -36,9 +35,6 @@ public class BattleScreen implements Screen {
     private int gridY = 10;
 
     private BattleGround ground;
-
-    private Knight knight1;
-    private Knight knight2;
 
     private Speech speech;
 
@@ -129,22 +125,14 @@ public class BattleScreen implements Screen {
             }
         }
 
-        knight1 = Knight.createKnight(19, 9);
-        knight2 = Knight.createKnight(1, 1);
-        addUnit(knight1);
-        addUnit(knight2);
-
         Gdx.input.setInputProcessor(stage);
 
         speech = Speech.getInstance();
 
         speech.speak("welcome to battle screen");
-        
-        speech.speak("player 1");
-        speech.speak("Knight at B 1");
-        speech.speak("player 2");
-        speech.speak("Knight at J 19");
 
+        ground.setUp(stage);
+        //ground.announceUnits();
     }
 
     private void addUnit(Unit unit) {

@@ -16,7 +16,7 @@ public class Speech {
 
     private LinkedList<Sound> words;
     private long lastSpokenTime = 0;
-    private long speechThreshold = 1000;
+    private long speechThreshold = 500;
 
     private Speech() {
         words = new LinkedList<Sound>();

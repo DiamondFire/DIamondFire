@@ -30,14 +30,28 @@ public abstract class Unit extends Actor {
 
 
         this.addListener(new InputListener() {
+            @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onTouchDown();
+                onTouchDown(x, y);
                 return true;
             }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                onTouchUp(x, y);
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                onTouchDragged(x, y);
+            }
+
         });
     }
 
-    public abstract void onTouchDown();
+    public abstract void onTouchDown(float x, float y);
+    public abstract void onTouchUp(float x, float y);
+    public abstract void onTouchDragged(float x, float y);
 
 
     /**
@@ -46,7 +60,7 @@ public abstract class Unit extends Actor {
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
         // Prepare the sprite before drawing
-        sprite.setPosition(posX * size, posY * size);
+        sprite.setPosition(getX(), getY());
         sprite.setScale(this.getScaleX(), this.getScaleY());
         sprite.draw(batch, parentAlpha);
     }
@@ -73,12 +87,6 @@ public abstract class Unit extends Actor {
     public void setPosition(int x, int y){
         this.posX = x;
         this.posY = y;
-
-        // Update the bounds for this unit, in screen position coordinates
-        float boundX = posX * size;
-        float boundY = posY * size;
-
-        this.setBounds(boundX, boundY, size, size);
     }
 
     public int getHealth() {
