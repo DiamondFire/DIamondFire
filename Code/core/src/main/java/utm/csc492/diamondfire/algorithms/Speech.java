@@ -2,6 +2,7 @@ package utm.csc492.diamondfire.algorithms;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ public class Speech {
 
     private LinkedList<Sound> words;
     private long lastSpokenTime = 0;
-    private long speechThreshold = 1000;
+    private long speechThreshold = 500;
 
     private Speech() {
         words = new LinkedList<Sound>();

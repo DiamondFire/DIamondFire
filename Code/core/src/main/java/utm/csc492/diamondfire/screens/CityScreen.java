@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import utm.csc492.diamondfire.DiamondFire;
+import utm.csc492.diamondfire.GameFunctions;
 import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.RestaurantActor;
 import utm.csc492.diamondfire.algorithms.Speech;
@@ -37,8 +38,6 @@ public class CityScreen implements Screen {
     public static int YEAR = 1991;
     public static String MONTH = "August";
     public static String PLAYERCHEF = "Jiro"; // the chef the user picked to play as
-    public Array<RestaurantActor> playerRestaurants = new Array<RestaurantActor>();
-    public Array<RestaurantActor> opponentRestaurants = new Array<RestaurantActor>();
 
     private SpriteBatch batch;
     private Texture texture, settingstexture;
@@ -91,8 +90,11 @@ public class CityScreen implements Screen {
                 createRestaurant((x*64)+(64*3),y*64,count,x,y);
             }
         }
+
+        speech = Speech.getInstance();
+
         // Assign any of the user's restaurants as the current restaurant for first turn; we'll just take the first one
-        gameState.setCurrentRestaurant(playerRestaurants.get(0));
+        GameFunctions.playerTurn();
 
         System.out.println("Welcome to Wasabi Jam! It's your turn!\nYour current restaurant: #" +
                 gameState.getCurrentRestaurant().number + " owned by Chef " + gameState.getCurrentRestaurant().owner +
@@ -100,10 +102,8 @@ public class CityScreen implements Screen {
                 + ")"
         );
         System.out.println("------------------------------------------------------");
-        System.out.println("What would you like to do? (1) Attack (2) Move troops (3) End turn");
+        System.out.println("What would you like to do?  Attack, Move troops, End turn");
 
-        speech = new Speech();
-        speech.speak("your turn at restaurant position " + gameState.getCurrentRestaurant().xCoord + " " + gameState.getCurrentRestaurant().yCoord);
     }
 
     @Override
@@ -192,35 +192,44 @@ public class CityScreen implements Screen {
         attackButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (gameState.paused == false) {
                 gameState.setAttackState(true);
                 attackButton.setVisible(false);
                 System.out.println("Which restaurant would you like to attack?");
                 System.out.println("You can only attack adjacent enemy restaurants.");
                 speech.speak("attack");
+                speech.speak("current position " + gameState.getCurrentRestaurant().xCoord + " "
+                                + gameState.getCurrentRestaurant().yCoord);
+                speech.speak("choose restaurant to attack");
+                }
             }
         });
 
         troopsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (gameState.paused == false) {
                 gameState.setMoveState(true);
                 attackButton.setVisible(false);
                 troopsButton.setVisible(true);
 
                 System.out.println("Which restaurant would you like to move troops to?");
                 System.out.println("You can only move troops to adjacent owned restaurants.");
-                speech.speak("move workers");
+                speech.speak("move workers"
+                 + " current number of workers " + gameState.getCurrentRestaurant().numWorkers
+                 + " choose restaurant to move workers to");
+                }
             }
         });
 
         endTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                speech.speak("end turn");
-
-                System.out.println("End Turn");
-                AITurn();
-                speech.speak("your turn");
+                if (gameState.paused == false) {
+                    speech.speak("end turn");
+                    System.out.println("End Turn");
+                    GameFunctions.endTurn();
+                }
             }
         });
 
@@ -231,15 +240,6 @@ public class CityScreen implements Screen {
         stage.draw();
 
         speech.update();
-    }
-
-    private void AITurn() {
-        speech.speak("opponent's turn");
-        try {
-            Thread.sleep(3000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private void createRestaurant(int x, int y, int num, int xCoord, int yCoord) {
@@ -254,9 +254,9 @@ public class CityScreen implements Screen {
         r.owner = chefNames[randNum];
         r.numWorkers = initTroopRanges[randNum][0] + rand.nextInt(initTroopRanges[randNum][1] - initTroopRanges[randNum][0]);
         if (r.owner == PLAYERCHEF) {
-            playerRestaurants.add(r);
+            gameState.getPlayerRestaurants().add(r);
         } else {
-            opponentRestaurants.add(r);
+            gameState.getOpponentRestaurants().add(r);
         }
 
         /*

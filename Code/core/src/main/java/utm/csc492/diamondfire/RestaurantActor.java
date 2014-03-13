@@ -38,7 +38,7 @@ public class RestaurantActor extends Actor {
 
         setColor(Color.YELLOW);
         //region = new TextureRegion();
-        speech = new Speech();
+        speech = Speech.getInstance();
 
         ClickListener clickListener = new ClickListener(){
             @Override
@@ -52,9 +52,8 @@ public class RestaurantActor extends Actor {
                     // check if restaurant is the same as current restaurant
                     if (number == gameState.getCurrentRestaurant().number) {
                         System.out.println("You can't attack your own restaurant! :O");
-                        speech.speak("you can not attack your own restaurant");
-                        speech.update();
-                    }
+                        speech.speak("you can not choose your own restaurant");
+                    } else {
                     // check if restaurant is adjacent
                     int oppXCoord, oppYCoord;
                     oppXCoord = gameState.getCurrentRestaurant().xCoord;
@@ -67,13 +66,13 @@ public class RestaurantActor extends Actor {
 
                         if (gameState.getMoveState()) {
                             numTroops = (int)(Math.floor((double)gameState.getCurrentRestaurant().numWorkers/2));
-                            speech.speak("move");
                         }
 
                         opposeRestaurant(numTroops);
                     } else {
                         System.out.println("That restaurant is too far away!");
-                        speech.speak("too far away");
+                        speech.speak("too far");
+                    }
                     }
                 }
             }
