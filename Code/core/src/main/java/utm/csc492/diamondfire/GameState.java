@@ -15,6 +15,10 @@ public class GameState {
     private RestaurantActor currentRestaurant;
     private RestaurantActor opposingRestaurant;
 
+    // BattleScreen stuff
+    private int bsPlayer = 1;
+    private int bsMoves = 0;
+
     // Reason for not keeping this private:
     // This will be used a lot for loading sprites, throughout the game
     // having a getter would just make the code longer without any benefit.
@@ -61,5 +65,29 @@ public class GameState {
 
     public RestaurantActor getOpposingRestaurant() {
         return this.opposingRestaurant;
+    }
+
+    /** returns next player **/
+    public int endTurn(){
+        bsMoves = 0;
+        bsPlayer = bsPlayer ^ 3;
+
+        return bsPlayer;
+    }
+
+    public int getBsPlayer(){
+        return bsPlayer;
+    }
+
+    public int getBsMoves(){
+        return bsMoves;
+    }
+
+    public void addMove(){
+        bsMoves += 1;
+    }
+
+    public int getBSUnits(int i) {
+        return 1;
     }
 }

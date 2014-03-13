@@ -28,23 +28,13 @@ public class Knight extends Unit{
 
     @Override
     public void onTouchUp(float x, float y) {
-        MoveByAction moveX = new MoveByAction();
-        moveX.setAmountX(32.0f * toSquare(x));
-        moveX.setDuration(Math.abs(toSquare(x)) * 0.1f);
-
-        MoveByAction moveY = new MoveByAction();
-        moveY.setAmountY(32.0f * toSquare(y));
-        moveY.setDuration(Math.abs(toSquare(y)) * 0.1f);
-
-        moveSeq = new SequenceAction(moveX, moveY);
-        Speech.getInstance().speak("move " + this.name + " to " + getLetter(toSquare(y) + getPosY()) + " " + (getPosX() + 1 + toSquare(x)));
-
-        this.setPosition(getPosY() + toSquare(y), getPosX() + toSquare(x));
-        this.addAction(moveSeq);
+        if(moved) return;
+        move(toSquare(x), toSquare(y));
     }
 
     @Override
     public void onTouchDragged(float x, float y) {
+        if(moved) return;
         if(toSquare(x) != toSquare(lastTouchX) || toSquare(y) != toSquare(lastTouchY)) {
             System.out.println(toSquare(x) + " " + toSquare(y));
             lastTouchX = x;
@@ -57,6 +47,12 @@ public class Knight extends Unit{
 
     @Override
     public void onTouchDown(float x, float y) {
+        if(moved) {
+            String message = "you have already moved this unit";
+            Speech.getInstance().speak(message);
+            return;
+        }
+
         String message = "select " + this.name + " at " + getLetter(getPosY()) + " " + Integer.toString(getPosX()+1);
         Speech.getInstance().speak(message);
 
@@ -93,5 +89,33 @@ public class Knight extends Unit{
     public void announcePosition() {
         String message = this.name + " " + "at" + " " + getLetter(getPosY()) + " " + Integer.toString(getPosX() + 1);
         Speech.getInstance().speak(message);
+    }
+
+    public void move(int x, int y) {
+
+        float size = 32.0f;
+        // Distance in pixels
+        float dx = size * x;
+        float dy = size * y;
+
+        int destX = getPosX() + x;
+        int destY = getPosY() + y;
+
+        MoveByAction moveX = new MoveByAction();
+        moveX.setAmountX(dx);
+        moveX.setDuration(Math.abs(x) * 0.1f);
+
+        MoveByAction moveY = new MoveByAction();
+        moveY.setAmountY(dy);
+        moveY.setDuration(Math.abs(y) * 0.1f);
+
+        moveSeq = new SequenceAction(moveX, moveY);
+        Speech.getInstance().speak("move " + this.name + " to " + getLetter(destY) + " " + (destX + 1));
+
+        this.setPosition(destY, destX);
+        this.addAction(moveSeq);
+
+        moved = true;
+        GameState.getInstance().addMove();
     }
 }

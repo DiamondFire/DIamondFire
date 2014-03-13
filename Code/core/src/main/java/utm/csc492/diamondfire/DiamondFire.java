@@ -3,7 +3,7 @@ package utm.csc492.diamondfire;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import utm.csc492.diamondfire.screens.CityScreen;
+import utm.csc492.diamondfire.screens.BattleScreen;
 
 
 public class DiamondFire extends ApplicationAdapter {
@@ -13,7 +13,8 @@ public class DiamondFire extends ApplicationAdapter {
     @Override
     public void create () {
         GameState.getInstance().setGame(this);
-        setScreen(new CityScreen(this));
+        //setScreen(new CityScreen(this));
+        setScreen(new BattleScreen());
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
+import utm.csc492.diamondfire.algorithms.AI;
 import utm.csc492.diamondfire.algorithms.Point;
 import utm.csc492.diamondfire.algorithms.Speech;
 import utm.csc492.diamondfire.models.BattleGround;
@@ -82,6 +83,27 @@ public class BattleScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         speech.update();
+        
+        evaluateTurn();
+    }
+
+    private void evaluateTurn() {
+        GameState gs = GameState.getInstance();
+        int player = gs.getBsPlayer();
+        int units = gs.getBSUnits(player);
+        int moves = gs.getBsMoves();
+
+        if(moves == units) {
+            speech.speak("player " + player + " end turn");
+            player = gs.endTurn();
+            AI.reset();
+            speech.speak("player " + player + " start");
+            ground.resetMoveFlags();
+        }
+
+        if(player == 2) {
+            AI.makeMove(ground);
+        }
     }
 
     private void drawMoveSequence(ShapeRenderer shapeRenderer, ArrayList<Point> moves) {

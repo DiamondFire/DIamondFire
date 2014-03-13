@@ -1,6 +1,7 @@
 package utm.csc492.diamondfire.models;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.algorithms.Speech;
 
 import java.util.ArrayList;
@@ -53,14 +54,14 @@ public class BattleGround {
         Speech speech = Speech.getInstance();
 
         // For Player 1
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < GameState.getInstance().getBSUnits(1); i++) {
             Knight knight = Knight.createKnight(0, 4+i);
             addUnit(1, knight);
             stage.addActor(knight);
         }
 
         // For Player 2
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < GameState.getInstance().getBSUnits(2); i++) {
             Knight knight = Knight.createKnight(19, 4+i);
             addUnit(2, knight);
             stage.addActor(knight);
@@ -75,6 +76,19 @@ public class BattleGround {
             for(Unit unit: players.get(i)) {
                 Knight knight = (Knight) unit;
                 knight.announcePosition();
+            }
+        }
+    }
+
+    public ArrayList<Unit> getUnits(int i) {
+        return players.get(i-1);
+    }
+
+    public void resetMoveFlags() {
+        for(int i = 0; i < 2; i++) {
+            for(Unit unit: players.get(i)) {
+                Knight knight = (Knight) unit;
+                knight.moved = false;
             }
         }
     }

@@ -16,6 +16,7 @@ public abstract class Unit extends Actor {
     protected int range;
     protected int move;
     protected int health;
+    protected boolean moved = false;
 
     private Sprite sprite;
 
