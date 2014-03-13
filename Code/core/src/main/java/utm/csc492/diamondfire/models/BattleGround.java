@@ -1,5 +1,8 @@
 package utm.csc492.diamondfire.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by yasith on 2/27/2014.
  */
@@ -9,11 +12,12 @@ public class BattleGround {
     public static final char WALL = 'W';
     public static final char FLAG = 'F';
 
-
     private char map[][];
 
     public int width;
     public int height;
+
+    List<ArrayList<Unit>> players = new ArrayList<ArrayList<Unit>>(2);
 
     public BattleGround(int width, int height) {
         this.width = width;
@@ -32,5 +36,10 @@ public class BattleGround {
 
     public void putUnit(Unit unit) {
         map[unit.getPosY()][unit.getPosX()] = unit.getShortName();
+    }
+
+    public void addUnit(int player, Unit unit) {
+        putUnit(unit);
+        players.get(player).add(unit);
     }
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.algorithms.Point;
+import utm.csc492.diamondfire.algorithms.Speech;
 import utm.csc492.diamondfire.models.BattleGround;
 import utm.csc492.diamondfire.models.Knight;
 import utm.csc492.diamondfire.models.Unit;
@@ -38,6 +39,8 @@ public class BattleScreen implements Screen {
 
     private Knight knight1;
     private Knight knight2;
+
+    private Speech speech;
 
     @Override
     public void render(float delta) {
@@ -82,7 +85,7 @@ public class BattleScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
+        speech.update();
     }
 
     private void drawMoveSequence(ShapeRenderer shapeRenderer, ArrayList<Point> moves) {
@@ -110,12 +113,14 @@ public class BattleScreen implements Screen {
     @Override
     public void show() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, 800, 480);
+        camera.update();
 
         shapeRenderer = new ShapeRenderer();
         spriteBatch = new SpriteBatch();
 
-        stage = new Stage(0, 0, true, spriteBatch);
+        stage = new Stage(800, 480, false, spriteBatch);
 
         ground = new BattleGround(gridX, gridY);
         for(int i = 0; i < gridY; i++) {
@@ -130,6 +135,16 @@ public class BattleScreen implements Screen {
         addUnit(knight2);
 
         Gdx.input.setInputProcessor(stage);
+
+        speech = Speech.getInstance();
+
+        speech.speak("welcome to battle screen");
+        
+        speech.speak("player 1");
+        speech.speak("Knight at B 1");
+        speech.speak("player 2");
+        speech.speak("Knight at J 19");
+
     }
 
     private void addUnit(Unit unit) {
