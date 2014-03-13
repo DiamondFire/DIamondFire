@@ -18,7 +18,7 @@ public class RestaurantActor extends Actor {
 
     public int x, y, width, height, xCoord, yCoord;
     private Texture texture;
-    public int number;
+    public int number, numWorkers;
     public String name;
     public String owner;
 

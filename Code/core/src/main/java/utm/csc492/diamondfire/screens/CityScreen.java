@@ -50,6 +50,11 @@ public class CityScreen implements Screen {
     public TextButton attackButton, troopsButton, endTurnButton;
     public RestaurantActor r; // fix this r
 
+    // game data
+    public static String chefNames[] = {"Jiro", "Michelin", "Jin", "Night", "Fish"};     // Jiro Ono = 85 year old sushi master and owner of "Sukiyabashi Jiro"
+    public static String textureNames[] = {"shopimg-jiro.png", "shopimg-michelin.png", "shopimg-jin.png", "shopimg-night.png", "shopimg-fish.png"};
+    public static int initTroopRanges[][] = {{100,160}, {150,210}, {120,200}, {150,290}, {100,130}};
+
     // constructor to keep a reference to the main Game class
     public CityScreen(DiamondFire game){
         this.game = game;
@@ -130,7 +135,8 @@ public class CityScreen implements Screen {
         table.setPosition(20,250);
 
         table.debug();
-        table.add(new Label("RESTAURANT #" +  gameState.getCurrentRestaurant().number + ": Chef " + gameState.getCurrentRestaurant().owner, uiSkin));
+        table.add(new Label("RESTAURANT #" +  gameState.getCurrentRestaurant().number +
+                ": Chef " + gameState.getCurrentRestaurant().owner, uiSkin));
         table.row();
         /*table.add(new Label("Gold: 999", uiSkin));
         table.row();
@@ -145,7 +151,7 @@ public class CityScreen implements Screen {
         table.add(new Label("Protection: 200", uiSkin));
         table.row();
         */
-        table.add(new Label("Number of Troops: ", uiSkin));
+        table.add(new Label("Number of Troops: " + gameState.getCurrentRestaurant().numWorkers, uiSkin));
         table.row();
 
         table.pack();
@@ -202,9 +208,6 @@ public class CityScreen implements Screen {
 
     private void createRestaurant(int x, int y, int num, int xCoord, int yCoord) {
         Random rand = new Random();
-        String chefNames[] = {"Jiro", "Michelin", "Jin", "Night", "Fish"};
-        // Jiro Ono = 85 year old sushi master and owner of "Sukiyabashi Jiro"
-        String textureNames[] = {"shopimg-jiro.png", "shopimg-michelin.png", "shopimg-jin.png", "shopimg-night.png", "shopimg-fish.png"};
 
         int randNum = rand.nextInt(5);
 
@@ -213,6 +216,7 @@ public class CityScreen implements Screen {
         r.xCoord = xCoord;
         r.yCoord = yCoord;
         r.owner = chefNames[randNum];
+        r.numWorkers = initTroopRanges[randNum][0] + rand.nextInt(initTroopRanges[randNum][1] - initTroopRanges[randNum][0]);
         if (r.owner == PLAYERCHEF) {
             playerRestaurants.add(r);
         } else {
