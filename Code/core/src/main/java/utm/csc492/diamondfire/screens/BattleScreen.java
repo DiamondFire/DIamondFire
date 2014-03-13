@@ -134,7 +134,7 @@ public class BattleScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        speech = new Speech();
+        speech = Speech.getInstance();
 
         speech.speak("Knight to A 8");
         speech.speak("attack Horseman move Knight to B 19");
