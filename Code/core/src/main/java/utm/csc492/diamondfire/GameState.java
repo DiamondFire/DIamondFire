@@ -1,6 +1,5 @@
 package utm.csc492.diamondfire;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
@@ -14,6 +13,7 @@ public class GameState {
     private boolean attackOn = false;
     private RestaurantActor currentRestaurant;
     private RestaurantActor opposingRestaurant;
+    private boolean moveOn = false;
 
     // Reason for not keeping this private:
     // This will be used a lot for loading sprites, throughout the game
@@ -41,10 +41,16 @@ public class GameState {
         this.game = game;
     }
 
-    public void setAttackState(boolean state) {  this.attackOn = state;    }
+    public void setAttackState(boolean state) {  this.attackOn = state; }
 
     public boolean getAttackState() {
         return this.attackOn;
+    }
+
+    public void setMoveState(boolean state) {  this.moveOn = state; }
+
+    public boolean getMoveState() {
+        return this.moveOn;
     }
 
     public void setCurrentRestaurant(RestaurantActor r) {

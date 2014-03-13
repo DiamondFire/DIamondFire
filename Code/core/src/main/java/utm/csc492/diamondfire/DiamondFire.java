@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import utm.csc492.diamondfire.screens.BattleScreen;
 import utm.csc492.diamondfire.screens.CityScreen;
 
 

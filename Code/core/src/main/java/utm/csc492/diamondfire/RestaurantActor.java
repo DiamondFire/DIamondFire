@@ -1,6 +1,5 @@
 package utm.csc492.diamondfire;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -11,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import utm.csc492.diamondfire.GameState;
+import utm.csc492.diamondfire.GameFunctions;
 
 import com.sun.swing.internal.plaf.synth.resources.synth_sv;
+import utm.csc492.diamondfire.algorithms.Speech;
 
 public class RestaurantActor extends Actor {
 
@@ -21,6 +22,7 @@ public class RestaurantActor extends Actor {
     public int number, numWorkers;
     public String name;
     public String owner;
+    public Speech speech;
 
     private GameState gameState = GameState.getInstance();
 
@@ -36,13 +38,13 @@ public class RestaurantActor extends Actor {
 
         setColor(Color.YELLOW);
         //region = new TextureRegion();
-
+        speech = new Speech();
 
         ClickListener clickListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                if (gameState.getAttackState() == true) {
+                if (gameState.getAttackState() == true || gameState.getMoveState() == true) {
 
                     System.out.println("You clicked on Restaurant #" + number + " owned by Chef " + owner +
                             " at position (" + xCoord + ", " + yCoord +")");
@@ -50,6 +52,8 @@ public class RestaurantActor extends Actor {
                     // check if restaurant is the same as current restaurant
                     if (number == gameState.getCurrentRestaurant().number) {
                         System.out.println("You can't attack your own restaurant! :O");
+                        speech.speak("you can not attack your own restaurant");
+                        speech.update();
                     }
                     // check if restaurant is adjacent
                     int oppXCoord, oppYCoord;
@@ -59,8 +63,17 @@ public class RestaurantActor extends Actor {
                     if ((xCoord == oppXCoord-1 || xCoord == oppXCoord || xCoord == oppXCoord+1)
                         && (yCoord == oppYCoord-1 || yCoord == oppYCoord || yCoord == oppYCoord+1)) {
                         //gameState.setOpposingRestaurant();
+                        int numTroops = 0;
+
+                        if (gameState.getMoveState()) {
+                            numTroops = (int)(Math.floor((double)gameState.getCurrentRestaurant().numWorkers/2));
+                            speech.speak("move");
+                        }
+
+                        opposeRestaurant(numTroops);
                     } else {
                         System.out.println("That restaurant is too far away!");
+                        speech.speak("too far away");
                     }
                 }
             }
@@ -94,6 +107,12 @@ public class RestaurantActor extends Actor {
     public boolean removeListener(EventListener listener) {
         return super.removeListener(listener);
     }
+
+    public void opposeRestaurant(int numTroops) {
+        gameState.setOpposingRestaurant(this);
+        GameFunctions.takeAction(numTroops);
+    }
+
     //public Chef owner;
 
 }

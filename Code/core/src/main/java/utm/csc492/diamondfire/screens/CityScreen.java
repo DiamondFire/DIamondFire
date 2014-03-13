@@ -12,14 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.RestaurantActor;
+import utm.csc492.diamondfire.algorithms.Speech;
 
 import javax.lang.model.type.NullType;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
@@ -49,6 +52,8 @@ public class CityScreen implements Screen {
 
     public TextButton attackButton, troopsButton, endTurnButton;
     public RestaurantActor r; // fix this r
+
+    private Speech speech;
 
     // game data
     public static String chefNames[] = {"Jiro", "Michelin", "Jin", "Night", "Fish"};     // Jiro Ono = 85 year old sushi master and owner of "Sukiyabashi Jiro"
@@ -96,6 +101,9 @@ public class CityScreen implements Screen {
         );
         System.out.println("------------------------------------------------------");
         System.out.println("What would you like to do? (1) Attack (2) Move troops (3) End turn");
+
+        speech = new Speech();
+        speech.speak("your turn at restaurant position " + gameState.getCurrentRestaurant().xCoord + " " + gameState.getCurrentRestaurant().yCoord);
     }
 
     @Override
@@ -188,14 +196,31 @@ public class CityScreen implements Screen {
                 attackButton.setVisible(false);
                 System.out.println("Which restaurant would you like to attack?");
                 System.out.println("You can only attack adjacent enemy restaurants.");
+                speech.speak("attack");
             }
         });
 
         troopsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                gameState.setMoveState(true);
+                attackButton.setVisible(false);
+                troopsButton.setVisible(true);
+
                 System.out.println("Which restaurant would you like to move troops to?");
                 System.out.println("You can only move troops to adjacent owned restaurants.");
+                speech.speak("move workers");
+            }
+        });
+
+        endTurnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                speech.speak("end turn");
+
+                System.out.println("End Turn");
+                AITurn();
+                speech.speak("your turn");
             }
         });
 
@@ -204,6 +229,17 @@ public class CityScreen implements Screen {
         stage.addActor(endTurnButton);
 
         stage.draw();
+
+        speech.update();
+    }
+
+    private void AITurn() {
+        speech.speak("opponent's turn");
+        try {
+            Thread.sleep(3000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private void createRestaurant(int x, int y, int num, int xCoord, int yCoord) {
@@ -223,11 +259,11 @@ public class CityScreen implements Screen {
             opponentRestaurants.add(r);
         }
 
+        /*
         int adjRestaurants[];
         if ((xCoord+1)%6 == 0) {
-            
+
         }
-        /*
         r.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent e, float x, float y) {
@@ -241,11 +277,26 @@ public class CityScreen implements Screen {
                 }
             };
         });
-        */
-        restaurants.add(r);
+
+
+    public void mouseClicked(MouseEvent arg0) {
+        if(inCircle(10, 10, arg0.getX(), arg0.getY(), 50)){
+            System.out.println("true");
+        } else {
+            System.out.println("false");
+        }
     }
 
-    public void launchAttack(RestaurantActor from, RestaurantActor to) {
+    public boolean isAdjacent(RestaurantActor r1, RestaurantActor r2) {
+        return false;
+    }
+        public void launchAttack(RestaurantActor from, RestaurantActor to) {
+    }
+        public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
+        return java.lang.Math.pow((circleX+radius - clickX),2) + java.lang.Math.pow((circleY+radius -clickY),2) < java.lang.Math.pow(radius,2);
+    }
+        */
+        restaurants.add(r);
     }
 
     @Override
@@ -276,19 +327,4 @@ public class CityScreen implements Screen {
         uiSkin.dispose();
     }
 
-    public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
-        return java.lang.Math.pow((circleX+radius - clickX),2) + java.lang.Math.pow((circleY+radius -clickY),2) < java.lang.Math.pow(radius,2);
-    }
-
-    public void mouseClicked(MouseEvent arg0) {
-        if(inCircle(10, 10, arg0.getX(), arg0.getY(), 50)){
-            System.out.println("true");
-        } else {
-            System.out.println("false");
-        }
-    }
-
-    public boolean isAdjacent(RestaurantActor r1, RestaurantActor r2) {
-        return false;
-    }
 }
