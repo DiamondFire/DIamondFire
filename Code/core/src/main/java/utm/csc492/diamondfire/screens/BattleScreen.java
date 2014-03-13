@@ -113,12 +113,14 @@ public class BattleScreen implements Screen {
     @Override
     public void show() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, 800, 480);
+        camera.update();
 
         shapeRenderer = new ShapeRenderer();
         spriteBatch = new SpriteBatch();
 
-        stage = new Stage(0, 0, true, spriteBatch);
+        stage = new Stage(800, 480, false, spriteBatch);
 
         ground = new BattleGround(gridX, gridY);
         for(int i = 0; i < gridY; i++) {
@@ -134,10 +136,15 @@ public class BattleScreen implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        speech = new Speech();
+        speech = Speech.getInstance();
 
-        speech.speak("Knight to A 8");
-        speech.speak("attack Horseman move Knight to B 19");
+        speech.speak("welcome to battle screen");
+        
+        speech.speak("player 1");
+        speech.speak("Knight at B 1");
+        speech.speak("player 2");
+        speech.speak("Knight at J 19");
+
     }
 
     private void addUnit(Unit unit) {
