@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
 import utm.csc492.diamondfire.algorithms.Point;
+import utm.csc492.diamondfire.algorithms.Speech;
 import utm.csc492.diamondfire.models.BattleGround;
 import utm.csc492.diamondfire.models.Knight;
 import utm.csc492.diamondfire.models.Unit;
@@ -38,6 +39,8 @@ public class BattleScreen implements Screen {
 
     private Knight knight1;
     private Knight knight2;
+
+    private Speech speech;
 
     @Override
     public void render(float delta) {
@@ -82,7 +85,7 @@ public class BattleScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-
+        speech.update();
     }
 
     private void drawMoveSequence(ShapeRenderer shapeRenderer, ArrayList<Point> moves) {
@@ -130,6 +133,11 @@ public class BattleScreen implements Screen {
         addUnit(knight2);
 
         Gdx.input.setInputProcessor(stage);
+
+        speech = new Speech();
+
+        speech.speak("Knight to A 8");
+        speech.speak("attack Horseman move Knight to B 19");
     }
 
     private void addUnit(Unit unit) {
