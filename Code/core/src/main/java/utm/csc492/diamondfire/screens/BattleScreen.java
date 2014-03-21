@@ -11,10 +11,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import utm.csc492.diamondfire.DiamondFire;
 import utm.csc492.diamondfire.GameState;
+import utm.csc492.diamondfire.algorithms.AI;
 import utm.csc492.diamondfire.algorithms.Point;
 import utm.csc492.diamondfire.algorithms.Speech;
 import utm.csc492.diamondfire.models.BattleGround;
-import utm.csc492.diamondfire.models.Knight;
 import utm.csc492.diamondfire.models.Unit;
 
 import java.util.ArrayList;
@@ -36,9 +36,6 @@ public class BattleScreen implements Screen {
     private int gridY = 10;
 
     private BattleGround ground;
-
-    private Knight knight1;
-    private Knight knight2;
 
     private Speech speech;
 
@@ -86,6 +83,27 @@ public class BattleScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         speech.update();
+        
+        evaluateTurn();
+    }
+
+    private void evaluateTurn() {
+        GameState gs = GameState.getInstance();
+        int player = gs.getBsPlayer();
+        int units = gs.getBSUnits(player);
+        int moves = gs.getBsMoves();
+
+        if(moves == units) {
+            speech.speak("player " + player + " end turn");
+            player = gs.endTurn();
+            AI.reset();
+            speech.speak("player " + player + " start");
+            ground.resetMoveFlags();
+        }
+
+        if(player == 2) {
+            AI.makeMove(ground);
+        }
     }
 
     private void drawMoveSequence(ShapeRenderer shapeRenderer, ArrayList<Point> moves) {
@@ -129,22 +147,14 @@ public class BattleScreen implements Screen {
             }
         }
 
-        knight1 = Knight.createKnight(19, 9);
-        knight2 = Knight.createKnight(1, 1);
-        addUnit(knight1);
-        addUnit(knight2);
-
         Gdx.input.setInputProcessor(stage);
 
         speech = Speech.getInstance();
 
         speech.speak("welcome to battle screen");
-        
-        speech.speak("player 1");
-        speech.speak("Knight at B 1");
-        speech.speak("player 2");
-        speech.speak("Knight at J 19");
 
+        ground.setUp(stage);
+        //ground.announceUnits();
     }
 
     private void addUnit(Unit unit) {

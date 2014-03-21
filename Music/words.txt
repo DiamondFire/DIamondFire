@@ -60,3 +60,11 @@ screen
 player
 your
 turn
+you
+have
+already
+moved
+this
+unit
+end
+start
