@@ -2,11 +2,6 @@ package utm.csc492.diamondfire;
 
 import com.badlogic.gdx.utils.Timer;
 import utm.csc492.diamondfire.algorithms.Speech;
-import utm.csc492.diamondfire.screens.CityScreen;
-import utm.csc492.diamondfire.DiamondFire;
-import utm.csc492.diamondfire.GameState;
-
-import java.util.concurrent.locks.Lock;
 
 /**
  * Created by rainsharmin on 2014-03-12.
@@ -23,14 +18,14 @@ public class GameFunctions {
 
     public static void takeAction(int numTroops) {
         speech=Speech.getInstance();
-        if (gameState.getMoveState()) {
+        if (gameState.isMoveOn()) {
             //update troops
             gameState.getCurrentRestaurant().numWorkers -= numTroops;
             gameState.getOpposingRestaurant().numWorkers += numTroops;
             speech.speak("move " + numTroops + " workers done");
             gameState.setMoveState(false);
             endTurn();
-        } else if (gameState.getAttackState()) {
+        } else if (gameState.isAttackOn()) {
             //launch attack
             speech.speak("attacking done");
             gameState.setAttackState(false);

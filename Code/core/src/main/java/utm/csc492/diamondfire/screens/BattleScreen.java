@@ -83,7 +83,7 @@ public class BattleScreen implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         speech.update();
-        
+
         evaluateTurn();
     }
 

@@ -1,7 +1,6 @@
 package utm.csc492.diamondfire;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import utm.csc492.diamondfire.GameState;
-import utm.csc492.diamondfire.GameFunctions;
 
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import utm.csc492.diamondfire.algorithms.Speech;
 
 public class RestaurantActor extends Actor {
@@ -44,7 +40,7 @@ public class RestaurantActor extends Actor {
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                if (gameState.getAttackState() == true || gameState.getMoveState() == true) {
+                if (gameState.isAttackOn() == true || gameState.isMoveOn() == true) {
 
                     System.out.println("You clicked on Restaurant #" + number + " owned by Chef " + owner +
                             " at position (" + xCoord + ", " + yCoord +")");
@@ -64,7 +60,7 @@ public class RestaurantActor extends Actor {
                         //gameState.setOpposingRestaurant();
                         int numTroops = 0;
 
-                        if (gameState.getMoveState()) {
+                        if (gameState.isMoveOn()) {
                             numTroops = (int)(Math.floor((double)gameState.getCurrentRestaurant().numWorkers/2));
                         }
 

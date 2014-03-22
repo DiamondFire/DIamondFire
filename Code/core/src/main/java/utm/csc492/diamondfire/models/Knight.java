@@ -11,6 +11,8 @@ import utm.csc492.diamondfire.algorithms.Speech;
  */
 public class Knight extends Unit{
 
+    private GameState gameState = GameState.getInstance();
+
     private float lastTouchX;
     private float lastTouchY;
 
@@ -28,13 +30,13 @@ public class Knight extends Unit{
 
     @Override
     public void onTouchUp(float x, float y) {
-        if(moved) return;
+        if(moved || !gameState.getAct().equals(this.toString()  + " confirmed")) return;
         move(toSquare(x), toSquare(y));
     }
 
     @Override
     public void onTouchDragged(float x, float y) {
-        if(moved) return;
+        if(moved || !gameState.getAct().equals(this.toString() + " confirmed")) return;
         if(toSquare(x) != toSquare(lastTouchX) || toSquare(y) != toSquare(lastTouchY)) {
             System.out.println(toSquare(x) + " " + toSquare(y));
             lastTouchX = x;
@@ -42,6 +44,7 @@ public class Knight extends Unit{
 
             Speech speech = Speech.getInstance();
             speech.speak(getLetter(getPosY() + toSquare(y)) + " " + (getPosX() + 1 + toSquare(x)));
+            System.out.println("dragging " + this.toString());
         }
     }
 
@@ -52,9 +55,16 @@ public class Knight extends Unit{
             Speech.getInstance().speak(message);
             return;
         }
-
-        String message = "select " + this.name + " at " + getLetter(getPosY()) + " " + Integer.toString(getPosX()+1);
-        Speech.getInstance().speak(message);
+        System.out.println("touched " + this.toString());
+        String message;
+        if (!gameState.getAct().equals(this.toString())) {
+            gameState.setAct(this.toString());
+            message = "select " + this.name + " at " + getLetter(getPosY()) + " " + Integer.toString(getPosX()+1)
+                + " drag to move release to confirm";
+            Speech.getInstance().speak(message);
+        } else {
+            gameState.setAct(this.toString() + " confirmed");
+        }
 
         lastTouchX = x;
         lastTouchY = y;
@@ -67,6 +77,7 @@ public class Knight extends Unit{
     public static Knight createKnight(int x, int y) {
         Sprite sprite = GameState.getInstance().atlas.createSprite("Knight");
         Knight knight = new Knight(sprite);
+        System.out.println("setting position " + Integer.toString(x) + " " + Integer.toString(y));
         knight.setPosition(x, y);
 
         float size = 32.0f;
@@ -92,7 +103,6 @@ public class Knight extends Unit{
     }
 
     public void move(int x, int y) {
-
         float size = 32.0f;
         // Distance in pixels
         float dx = size * x;
@@ -117,5 +127,11 @@ public class Knight extends Unit{
 
         moved = true;
         GameState.getInstance().addMove();
+    }
+
+    @Override
+    public String toString() {
+        String s = "Knight at " + getLetter(getPosY()) + " " + Integer.toString(getPosX()+1);
+        return s;
     }
 }
