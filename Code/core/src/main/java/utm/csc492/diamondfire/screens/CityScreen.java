@@ -68,6 +68,8 @@ public class CityScreen implements Screen {
     public void show() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+        camera.update();
+
         batch = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("shopimg.png"));
         sprite = new Sprite(texture);
@@ -143,6 +145,8 @@ public class CityScreen implements Screen {
         table.setPosition(20,250);
 
         table.debug();
+        table.clear();
+
         table.add(new Label("RESTAURANT #" +  gameState.getCurrentRestaurant().number +
                 ": Chef " + gameState.getCurrentRestaurant().owner, uiSkin));
         table.row();
@@ -163,7 +167,6 @@ public class CityScreen implements Screen {
         table.row();
 
         table.pack();
-
         // Table for the Command buttons
         /*
         tableButtons=new Table();
@@ -225,12 +228,39 @@ public class CityScreen implements Screen {
         endTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //this.setTapCountInterval(0.4f);
+                //System.out.println(this.getTapCount());
+
                 if (gameState.paused == false) {
-                    speech.speak("end turn");
-                    System.out.println("End Turn");
-                    GameFunctions.endTurn();
+
+
+                   /* if (this.getTapCount() == 2) { // double tapped
+                        System.out.println("double!!!");
+                        speech.speak("end turn"); // click to
+                        //GameFunctions.endTurn();
+                    } else {
+                        System.out.println("single!!!");
+
+                        speech.speak("double tap to end turn "); // click to
+                        System.out.println("End Turn");
+                    }
+
+                    */
+
+                    if (gameState.getAct() == "end") {
+                        speech.speak("end turn"); // click to
+                        GameFunctions.endTurn();
+                        gameState.setAct("");
+                    } else {
+                        speech.speak("end turn tap again to confirm");
+                        gameState.setAct("end");
+                    }
+
+
+
                 }
             }
+
         });
 
         stage.addActor(attackButton);

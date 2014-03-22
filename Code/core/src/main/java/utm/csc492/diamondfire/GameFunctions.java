@@ -2,11 +2,8 @@ package utm.csc492.diamondfire;
 
 import com.badlogic.gdx.utils.Timer;
 import utm.csc492.diamondfire.algorithms.Speech;
+import utm.csc492.diamondfire.screens.BattleScreen;
 import utm.csc492.diamondfire.screens.CityScreen;
-import utm.csc492.diamondfire.DiamondFire;
-import utm.csc492.diamondfire.GameState;
-
-import java.util.concurrent.locks.Lock;
 
 /**
  * Created by rainsharmin on 2014-03-12.
@@ -14,7 +11,7 @@ import java.util.concurrent.locks.Lock;
 public class GameFunctions {
 
     private static GameState gameState = GameState.getInstance();
-    private DiamondFire game = gameState.getGame();
+    private static DiamondFire game = gameState.getGame();
     private static Speech speech;
 
     public void launchAttack(RestaurantActor r1, RestaurantActor r2) {
@@ -23,15 +20,16 @@ public class GameFunctions {
 
     public static void takeAction(int numTroops) {
         speech=Speech.getInstance();
-        if (gameState.getMoveState()) {
+        if (gameState.isMoveOn()) {
             //update troops
             gameState.getCurrentRestaurant().numWorkers -= numTroops;
             gameState.getOpposingRestaurant().numWorkers += numTroops;
             speech.speak("move " + numTroops + " workers done");
             gameState.setMoveState(false);
             endTurn();
-        } else if (gameState.getAttackState()) {
+        } else if (gameState.isAttackOn()) {
             //launch attack
+            switchScreen('b');
             speech.speak("attacking done");
             gameState.setAttackState(false);
             endTurn();
@@ -63,6 +61,19 @@ public class GameFunctions {
             }
         }, 5);
 
+    }
+
+    public static void switchScreen(char s){
+        switch(s) {
+            case 'c':
+                game.setScreen(new CityScreen(game));
+                break;
+            case 'b':
+                game.setScreen(new BattleScreen());
+                break;
+            case 's':
+                break;
+        }
     }
 
     public static void playerTurn() {

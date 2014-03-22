@@ -15,8 +15,15 @@ public class GameState {
     private boolean attackOn = false;
     private RestaurantActor currentRestaurant;
     private RestaurantActor opposingRestaurant;
-    private boolean moveOn = false;
+    private String act = "";
     public boolean paused = false;
+
+    // BattleScreen stuff
+    private int bsPlayer = 1;
+    private int bsMoves = 0;
+
+    // CityUI stuff
+    private boolean moveOn = false;
 
     public Array<RestaurantActor> getPlayerRestaurants() {
         return playerRestaurants;
@@ -66,13 +73,13 @@ public class GameState {
 
     public void setAttackState(boolean state) {  this.attackOn = state; }
 
-    public boolean getAttackState() {
+    public boolean isAttackOn() {
         return this.attackOn;
     }
 
     public void setMoveState(boolean state) {  this.moveOn = state; }
 
-    public boolean getMoveState() {
+    public boolean isMoveOn() {
         return this.moveOn;
     }
 
@@ -92,7 +99,39 @@ public class GameState {
         return this.opposingRestaurant;
     }
 
+    public String getAct() {
+        return act;
+    }
+
+    public void setAct(String act) {
+        this.act = act;
+    }
+
     public int getTurnCount() { return this.turnCount; }
 
     public void increaseTurnCount() { turnCount += 1; if (turnCount > playerRestaurants.size-1) { turnCount = 0; } }
+
+    /** returns next player **/
+    public int endTurn(){
+        bsMoves = 0;
+        bsPlayer = bsPlayer ^ 3;
+
+        return bsPlayer;
+    }
+
+    public int getBsPlayer() {
+        return bsPlayer;
+    }
+
+    public int getBsMoves(){
+        return bsMoves;
+    }
+
+    public void addMove(){
+        bsMoves += 1;
+    }
+
+    public int getBSUnits(int i) {
+        return 1;
+    }
 }
