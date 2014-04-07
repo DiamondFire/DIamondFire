@@ -50,7 +50,7 @@ public class CityScreen implements Screen {
     private Table table;
 
     public TextButton attackButton, troopsButton, endTurnButton;
-    public RestaurantActor r; // fix this r
+    public RestaurantActor r;
 
     private Speech speech;
 
@@ -124,8 +124,6 @@ public class CityScreen implements Screen {
 
         Label msgLabel = new Label( "Welcome!", uiSkin );
         msgLabel.setPosition(200, 25);
-        //welcomeLabel.y = ( currentY + 100 );
-        //label.setAlignment(Align.bottom, Align.left);
         stage.addActor(msgLabel);
 
         batch.begin();
@@ -135,12 +133,10 @@ public class CityScreen implements Screen {
         batch.end();
 
         for(RestaurantActor restaurant: restaurants) {
-            //batch.draw(texture, restaurant.x, restaurant.y);
             stage.addActor(restaurant);
         }
 
         table = new Table();
-        //table.setFillParent(true);
         stage.addActor(table);
         table.setPosition(20,250);
 
@@ -150,41 +146,16 @@ public class CityScreen implements Screen {
         table.add(new Label("RESTAURANT #" +  gameState.getCurrentRestaurant().number +
                 ": Chef " + gameState.getCurrentRestaurant().owner, uiSkin));
         table.row();
-        /*table.add(new Label("Gold: 999", uiSkin));
-        table.row();
-        table.add(new Label("Food: 999", uiSkin));
-        table.row();
-        table.add(new Label("Employees: 999", uiSkin));
-        table.row();
-        table.add(new Label("Customer Loyalty: 100", uiSkin));
-        table.row();
-        table.add(new Label("Ingredient Cultivation: 200", uiSkin));
-        table.row();
-        table.add(new Label("Protection: 200", uiSkin));
-        table.row();
-        */
+
         table.add(new Label("Number of Troops: " + gameState.getCurrentRestaurant().numWorkers, uiSkin));
         table.row();
 
         table.pack();
-        // Table for the Command buttons
-        /*
-        tableButtons=new Table();
-        tableButtons.setSize(800,480);
-        tableButtons.setPosition(20, 350);
-        tableButtons.debug();
-        */
+
         attackButton=new TextButton("Attack", uiSkin);
-        //tableButtons.add(attackButton).width(200).height(50);
         troopsButton=new TextButton("Move Troops", uiSkin);
         endTurnButton=new TextButton("End Turn", uiSkin);
 
-        //tableButtons.add(troopsButton).width(150).padTop(10).padBottom(3);
-        //tableButtons.row();
-        //stage.addActor(tableButtons);
-
-        // I was going to use a table for the command buttons but since we only have three
-        // buttons, I just added them in individually at least for now. :o
         attackButton.setPosition(200,20);
         troopsButton.setPosition(320,20);
         endTurnButton.setPosition(440,20);
@@ -196,6 +167,7 @@ public class CityScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (gameState.paused == false) {
+                    gameState.setAct("");
                     gameState.setAttackState(true);
                     attackButton.setVisible(false);
                     System.out.println("Which restaurant would you like to attack?");
@@ -212,6 +184,7 @@ public class CityScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (gameState.paused == false) {
+                    gameState.setAct("");
                     gameState.setMoveState(true);
                     attackButton.setVisible(false);
                     troopsButton.setVisible(true);
@@ -228,35 +201,17 @@ public class CityScreen implements Screen {
         endTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //this.setTapCountInterval(0.4f);
-                //System.out.println(this.getTapCount());
 
                 if (gameState.paused == false) {
 
-
-                   /* if (this.getTapCount() == 2) { // double tapped
-                        System.out.println("double!!!");
-                        speech.speak("end turn"); // click to
-                        //GameFunctions.endTurn();
-                    } else {
-                        System.out.println("single!!!");
-
-                        speech.speak("double tap to end turn "); // click to
-                        System.out.println("End Turn");
-                    }
-
-                    */
-
                     if (gameState.getAct() == "end") {
-                        speech.speak("end turn"); // click to
+                        speech.speak("end turn");
                         GameFunctions.endTurn();
                         gameState.setAct("");
                     } else {
                         speech.speak("end turn tap again to confirm");
                         gameState.setAct("end");
                     }
-
-
 
                 }
             }
@@ -289,43 +244,6 @@ public class CityScreen implements Screen {
             gameState.getOpponentRestaurants().add(r);
         }
 
-        /*
-        int adjRestaurants[];
-        if ((xCoord+1)%6 == 0) {
-
-        }
-        r.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent e, float x, float y) {
-                if ((attackOn = true)) { //separate method? later: add case checking, if r.owner perror, else ..
-                    if (e.getRelatedActor().getName() == currentTurn) {
-                        System.out.println("You can't attack your own restaurant!");
-                    } else {
-                        System.out.println(r.owner + "  " + r.number);
-                    }
-                    System.out.println(e.getRelatedActor().getName());
-                }
-            };
-        });
-
-
-    public void mouseClicked(MouseEvent arg0) {
-        if(inCircle(10, 10, arg0.getX(), arg0.getY(), 50)){
-            System.out.println("true");
-        } else {
-            System.out.println("false");
-        }
-    }
-
-    public boolean isAdjacent(RestaurantActor r1, RestaurantActor r2) {
-        return false;
-    }
-        public void launchAttack(RestaurantActor from, RestaurantActor to) {
-    }
-        public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
-        return java.lang.Math.pow((circleX+radius - clickX),2) + java.lang.Math.pow((circleY+radius -clickY),2) < java.lang.Math.pow(radius,2);
-    }
-        */
         restaurants.add(r);
     }
 

@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import utm.csc492.diamondfire.algorithms.Speech;
 
 public class RestaurantActor extends Actor {
@@ -34,7 +33,6 @@ public class RestaurantActor extends Actor {
         this.height = height;
 
         setColor(Color.YELLOW);
-        //region = new TextureRegion();
         speech = Speech.getInstance();
 
         ClickListener clickListener = new ClickListener(){
@@ -50,8 +48,8 @@ public class RestaurantActor extends Actor {
 
                     // check if restaurant is the same as current restaurant
                     if (number == gameState.getCurrentRestaurant().number) {
-                        System.out.println("You can't attack your own restaurant! :O");
-                        speech.speak("that is current restaurant"); // the
+                        speech.speak("that is current restaurant"); // the current restaurant was selected
+                        gameState.setAct("");
                     } else {
 
                         // check if restaurant is adjacent
@@ -62,7 +60,6 @@ public class RestaurantActor extends Actor {
                         if (appropriateOwner()) {
                             if ((xCoord == oppXCoord-1 || xCoord == oppXCoord || xCoord == oppXCoord+1)
                                     && (yCoord == oppYCoord-1 || yCoord == oppYCoord || yCoord == oppYCoord+1)) {
-                                //gameState.setOpposingRestaurant();
                                 if (gameState.getAct().equals("rest " + String.valueOf(number))) {
                                     int numTroops = 0;
 
@@ -79,6 +76,7 @@ public class RestaurantActor extends Actor {
                             } else {
                                 System.out.println("That restaurant is too far away!");
                                 speech.speak("too far");
+                                gameState.setAct("");
                             }
 
                         }
@@ -101,7 +99,6 @@ public class RestaurantActor extends Actor {
 
     @Override
     public Actor hit(float x, float y, boolean touchable) {
-        //System.out.println("touch down");
         return super.hit(x, y, touchable);
     }
 
@@ -121,11 +118,13 @@ public class RestaurantActor extends Actor {
                 return true;
             } else if (gameState.isAttackOn()){
                 speech.speak("you can not attack your own restaurant");
+                gameState.setAct("");
                 return false;
             }
         } else {
             if (gameState.isMoveOn()) {
                 speech.speak("you can not move to opponent restaurant");
+                gameState.setAct("");
                 return false;
             } else if (gameState.isAttackOn()){
                 return true;
@@ -138,51 +137,4 @@ public class RestaurantActor extends Actor {
         gameState.setOpposingRestaurant(this);
         GameFunctions.takeAction(numTroops);
     }
-
-    //public Chef owner;
-
 }
-/*import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.utils.Array;
-
-/**
- * Created by rainsharmin on 2014-02-09.
- */
-/*
-public class RestaurantActor extends Actor {
-
-    private Texture texture;
-    public int number;
-    public String name;
-
-    public RestaurantActor () {
-        texture = new Texture(Gdx.files.internal("shopimg.png"));
-
-        //region = new TextureRegion();
-    }
-
-    @Override
-    public void draw (SpriteBatch batch, float parentAlpha) {
-        Color color = getColor();
-        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-
-        batch.begin();
-        for(RestaurantActor restaurant: restaurants) {
-            batch.draw(texture, restaurant.x, restaurant.y);
-        }
-        batch.end();    */    //batch.draw(region, getX(), getY(), getOriginX(), getOriginY(),
-          //      getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
- //   }
-
-    /*public Actor hit (float x, float y, boolean touchable) {
-        if (touchable && getTouchable() != Touchable.enabled) return null;
-        return x >= 0 && x < width && y >= 0 && y < height ? this : null;
-    }*/
-//}
