@@ -16,8 +16,8 @@ public class DiamondFire extends ApplicationAdapter {
     @Override
     public void create () {
         GameState.getInstance().setGame(this);
-        //setScreen(new CityScreen(this));
-        setScreen(new BattleScreen());
+        setScreen(new CityScreen(this));
+        //setScreen(new BattleScreen());
     }
 
     @Override
