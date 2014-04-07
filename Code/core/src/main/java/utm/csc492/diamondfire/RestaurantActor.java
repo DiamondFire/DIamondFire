@@ -45,33 +45,44 @@ public class RestaurantActor extends Actor {
                     System.out.println("You clicked on Restaurant #" + number + " owned by Chef " + owner +
                             " at position (" + xCoord + ", " + yCoord +")");
 
+                    speech.speak("position " + xCoord + " " + yCoord + " owned by chef " + owner);
+
                     // check if restaurant is the same as current restaurant
                     if (number == gameState.getCurrentRestaurant().number) {
                         System.out.println("You can't attack your own restaurant! :O");
-                        speech.speak("you can not choose your own restaurant");
+                        speech.speak("that is current restaurant"); // the
                     } else {
-                    // check if restaurant is adjacent
-                    int oppXCoord, oppYCoord;
-                    oppXCoord = gameState.getCurrentRestaurant().xCoord;
-                    oppYCoord = gameState.getCurrentRestaurant().yCoord;
 
-                    if ((xCoord == oppXCoord-1 || xCoord == oppXCoord || xCoord == oppXCoord+1)
-                        && (yCoord == oppYCoord-1 || yCoord == oppYCoord || yCoord == oppYCoord+1)) {
-                        //gameState.setOpposingRestaurant();
-                        int numTroops = 0;
+                        // check if restaurant is adjacent
+                        int oppXCoord, oppYCoord;
+                        oppXCoord = gameState.getCurrentRestaurant().xCoord;
+                        oppYCoord = gameState.getCurrentRestaurant().yCoord;
 
-                        if (gameState.isMoveOn()) {
-                            numTroops = (int)(Math.floor((double)gameState.getCurrentRestaurant().numWorkers/2));
+                        if (appropriateOwner()) {
+                            if ((xCoord == oppXCoord-1 || xCoord == oppXCoord || xCoord == oppXCoord+1)
+                                    && (yCoord == oppYCoord-1 || yCoord == oppYCoord || yCoord == oppYCoord+1)) {
+                                //gameState.setOpposingRestaurant();
+                                if (gameState.getAct().equals("rest " + String.valueOf(number))) {
+                                    int numTroops = 0;
+
+                                    if (gameState.isMoveOn()) {
+                                        numTroops = (int)(Math.floor((double)gameState.getCurrentRestaurant().numWorkers/2));
+                                    }
+                                    opposeRestaurant(numTroops);
+                                    gameState.setAct("");
+                                } else {
+                                    gameState.setAct("rest " + String.valueOf(number));
+                                    speech.speak("tap again to confirm");
+                                }
+
+                            } else {
+                                System.out.println("That restaurant is too far away!");
+                                speech.speak("too far");
+                            }
+
                         }
 
-                        opposeRestaurant(numTroops);
-                    } else {
-                        System.out.println("That restaurant is too far away!");
-                        speech.speak("too far");
-                    }
-                    }
-                }
-            }
+                    }}}
         };
 
         this.addListener(clickListener);
@@ -101,6 +112,25 @@ public class RestaurantActor extends Actor {
     @Override
     public boolean removeListener(EventListener listener) {
         return super.removeListener(listener);
+    }
+
+    public boolean appropriateOwner() {
+        if (owner == gameState.getCurrentRestaurant().owner) {
+            if (gameState.isMoveOn()) {
+                return true;
+            } else if (gameState.isAttackOn()){
+                speech.speak("you can not attack your own restaurant");
+                return false;
+            }
+        } else {
+            if (gameState.isMoveOn()) {
+                speech.speak("you can not move to opponent restaurant");
+                return false;
+            } else if (gameState.isAttackOn()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void opposeRestaurant(int numTroops) {
@@ -147,8 +177,8 @@ public class RestaurantActor extends Actor {
             batch.draw(texture, restaurant.x, restaurant.y);
         }
         batch.end();    */    //batch.draw(region, getX(), getY(), getOriginX(), getOriginY(),
-          //      getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
- //   }
+//      getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+//   }
 
     /*public Actor hit (float x, float y, boolean touchable) {
         if (touchable && getTouchable() != Touchable.enabled) return null;
