@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import utm.csc492.diamondfire.algorithms.Speech;
 
 public class RestaurantActor extends Actor {
@@ -177,8 +178,8 @@ public class RestaurantActor extends Actor {
             batch.draw(texture, restaurant.x, restaurant.y);
         }
         batch.end();    */    //batch.draw(region, getX(), getY(), getOriginX(), getOriginY(),
-//      getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
-//   }
+          //      getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+ //   }
 
     /*public Actor hit (float x, float y, boolean touchable) {
         if (touchable && getTouchable() != Touchable.enabled) return null;
